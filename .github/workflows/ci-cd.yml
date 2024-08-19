@@ -13,7 +13,7 @@ on:
         run: docker build -t deploy .
       - name: Test application
         run: |
-          docker run --name test-container -d -p 8080:80 deploy:${{ github.sha }}
+          docker run --name test-container -d -p 8080:80 deploy
           sleep 5
           curl http://localhost:8080 | grep "Hello, CI/CD!"
           docker stop test-container
