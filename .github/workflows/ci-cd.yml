@@ -10,7 +10,7 @@ on:
       steps:
       - uses: actions/checkout@v4
       - name: Build Docker image
-        run: docker build -t deploy .
+        run: docker build -t deploy:${{ github.sha }} .
       - name: Test application
         run: |
           docker run --name test-container -d -p 8080:80 deploy:${{ github.sha }}
