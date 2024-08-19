@@ -11,12 +11,11 @@ on:
       - uses: actions/checkout@v2
 
       - name: Build Docker image
-        run: docker build -t myapp .
+        run: docker build -t deploy .
 
       - name: Test application
         run: |
-          docker run --name test-container -d -p 8080:80
-          myapp:${{ github.sha }}
+          docker run --name test-container -d -p 8080:80 deploy:${{ github.sha }}
           sleep 5
           curl http://localhost:8080 | grep "Hello, CI/CD!"
           docker stop test-container
@@ -26,8 +25,6 @@ on:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
       - name: Push to Docker Hub
-      run: |
-        docker tag myapp:${{ github.sha }} ${{
-        secrets.DOCKER_USERNAME }}/myapp:latest
-        docker push ${{ secrets.DOCKER_USERNAME
-        }}/myapp:latest
+        run: |
+          docker tag deploy:${{ github.sha }} ${{ secrets.DOCKER_USERNAME }}/deploy:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/deploy:latest
